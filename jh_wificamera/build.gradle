@@ -1,0 +1,177 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.github.panpf.bintray-publish'
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.aivenlau'
+
+android {
+    compileSdkVersion 28
+    //buildToolsVersion '28.0.3'
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 28
+//        versionCode 2
+//        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters 'armeabi-v7a','arm64-v8a'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'org.simple:androideventbus:1.0.5.1'
+    compileOnly 'org.tensorflow:tensorflow-android:1.13.1'
+}
+
+
+
+//publish {
+//    userOrg = 'aivenlau'//bintray.com用户名
+//    groupId = 'com.Joyhonest'//jcenter上的路径
+//    artifactId = 'Wifi_Camera'//项目名称
+//    publishVersion = '4.6.0'//版本号 3.0.0 后支持 arm64
+//
+//
+//
+//    desc = 'This is for JH WifiCamera'//描述，不重要
+//    website = 'https://github.com/aivenlau/Wifi_Camera'//网站，最好有，不重要
+//
+//    // ./gradlew clean build bintrayUpload  -PbintrayUser=aivenlau  -PbintrayKey=18013f247275f1d35b7d591240c8594d99ef7a85  -PdryRun=false
+//
+//
+//    /*
+//    4.6.0  修正在线播放 Android 11上出现闪退的问题。
+//    4.5.9  解决在线播放完成后的线程死锁
+//    4.5.7  调整Gsensor算法，优化yipincheng 项目
+//    4.5.3  调整Gsensor算法，优化yipincheng 项目
+//    4.5.0  调整读取20000 和 20001 端口开启流程，以免同一手机不同的APP运行时出现问题。
+//    4.4.7  增加获取视频图片，用来做视频编辑的图片流。
+//    4.4.5  调整Gsensor算法，因为振动引起数据混乱时，gsensor会暂停使用。 以免画面不停的晃动。
+//    4.4.3  修正 Mjpeg 加入 3D降噪。
+//    4.4.2  修正自动对焦，（主要是不同的固件， 发送数据有的是小头模式，有的是大头模式。
+//    4.3.9  调整Gsensor，剔除一些非正常情况下的干扰数据。
+//    4.3.6  读取20001端口在SDK内部调用，无需外部执行 ReatUDP（20001）;
+//    4.3.5  sent_cmd_udp 加入锁。
+//    4.3.4  bugs fixed
+//    4.3.3  修正自动对焦时，优化线程时出现的bug
+//    4.3.2  增加 新协议的 按键拍照 缩放以及透传等功能
+//    4.3.1  修复自定义播放器播放无声的视频文件会闪退的bug。
+//    4.3.0  bug fixed,  移出mediacodec 解码，发现解码1080P时，比软解还要慢。
+//    4.2.9   添加 自定义播放器使用硬件界面H264
+//    4.2.8   添加 一个自定义播放器，因为系统自带的和一些第三方播放器兼容性不好
+//    4.2.3   添加 IR  Pir  设定
+//    4.1.9   屏蔽一下log
+//    4.1.7   修改在线播放时，如果时MJPG 格式，分辨率720 及以上时，不播放声音，因为带宽不够，播放声音卡顿明显。
+//    4.1.4   bug fixed,  添加 GP42225 VCM读取返回
+//    4.1.3   fix bugs
+//    4.1.1   增加 F_Convert ，用来转换 从SD卡下载下拉的视频MOV转码Mp4。(因为在某些手机上，MOV无法用内置的播放器播放
+//    4.1.0   增加旋转Gsensor旋转图片时，由外部来旋转图片。可以很好的利用GPU，但录像文件喝拍照不会旋转。
+//    4.0.9   修复用GLsurface 显示时设定背景小时闪退
+//    4.0.8   优化录像
+//    4.0.4   优化录像，增加硬件编码的兼容性。
+//    3.9.3   优化Gsensor旋转图片，静止时图片有跳动的问题。
+//    3.9.2   fixbugs
+//    3.9.1   优化圆形输出时改变分辨率出现绿屏现象
+//    3.9.0   优化圆形输出时的效率
+//    3.8.9   优化Gsnesor
+//    3.8.8   bugs fixed
+//    3.8.7  修复 Gsensor bugs
+//    3.8.5  添加 修正 暗角的 API
+//    3.8.4  添加 修正 暗角的 API(此版本 不建议使用)
+//    3.8.3  添加 naSentPhotoKey
+//    3.8.2  修复 SD卡录像时间计算错误的bug
+//    3.8.1  添加设定读取摄像头参数的命令(修复bugs)
+//    3.8.0  添加设定读取摄像头参数的命令
+//    3.7.9  添加设定读取摄像头参数的命令(此版本废止)
+//    3.7.8  改为默认3D降噪功能打开
+//    3.7.7  3D降噪的函数名称改为 naSet3DDenoiser(boolean b);
+//    3.7.6  添加自动调焦时发送调焦命令后的延时设定。
+//    3.7.3  修正解码有可能出现的内存泄露问题。
+//    3.7.2  添加3D降噪
+//    3.7.1  把360P录像码率提高,以改善录像质量.
+//    3.7.0  bug fxied
+//    3.6.9  添加GP4225的处理,也添加了一个开关,是否SDK来处理GP4225的一些命令处理,这样应用可以自己来处理数据
+//    3.6.8  添加GP4225的处理
+//    3.6.6  添加 GPH264 ——SD模块 的 自动调焦
+//    3.6.5  修复3.6.4 一些小bug（拍照返回 ，文件名为空的问题）
+//    3.6.4  增加根据文件名称来决定 储存图片是JPG  还是 png格式
+//    3.6.3  增加自动调焦
+//    3.6.1  添加在线播放时 开始播放和结束播放事件。
+//    3.6.0  修复 单独录像 到手机 或者SD卡引起闪退的问题
+//    3.5.9  添加 获取缩略图 的SDK API(提供兼容性)
+//    3.5.4   修改GP4225 获取文件列表流程
+//    3.5.3
+//    3.5.2  完善GP4225功能
+//    3.5.1  bugs fixed
+//    3.5.0  bug fixed（对于192.168.27.1 模快，无需要去指定 rtsp://192.168.27.1   ,SDK内部添加这个。
+//    3.4.9  改进手势识别
+//    3.4.8  将手势识别的 图片缩放用C实现，用来提高效率，以便在一些性能比较低的手机上运行。
+//    3.4.6  修复一处内存泄露的问题。
+//    3.4.5  bugfixed
+//    3.4.4  bugs fixed
+//    3.4.3  bugs fixed
+//    3.4.2  添加GP4225 支持SD卡  192.168.33.x
+//    3.4.1  添加旋转 0 90 180，270  收到的数据。（注意，这里的旋转，是把直接把摄像头来的数据旋转，会改变实际图片的宽高
+//
+//    3.3.9  2019-07-29     修复读取UDP时，如果stopReadUDP再打开startReadUDP是无法读取的问题
+//    3.3.6  2019-07-03     bugfixed
+//    3.3.5  2019-06-20     bugfixed
+//    3.3..4 2019-06-12     添加如果SDK内部没有处理的wifi命令，直接透传到 APP(通过 GetDataFromWifi）
+//    3.3.3  2019-06-4      添加支持RTL  是普普通模块还是 PIR模块
+//    3.3.2    2019-06-4    修改bugs
+//    3.3.1    2019-06-3    修改bugs
+//    3.3.0    2019-05-29   修改.so文件中缩放中截图改为调用 libyuv 库，以提高效率
+//    3.2.9    2019-05-25   微调手势识别代码
+//    3.2.8    2019-05-24   增加读取密码信息
+//    3.2.7    2019-05-24   增加设定手势识别灵敏度膜
+//    3.2.6    2019-05-17   增加设定和读取摄像头补光灯PWM
+//    3.2.3    2019-05-14   修复bug
+//    3.2.2    2019-05-14   修复bug
+//     3.2.1    2019-05-13  加入对RTL 模块 浏览下载 SD文件
+//     3.2.0    2019-04-28  修复在MTK CPU 上的某些机型录像时录像文件花屏。
+//     3.1.9     2019-04-25  修复在某些机型上显示花屏。
+//     3.1.8     2019-04-23
+//         修复读写flash接口
+//     3.1.6    2019-04-18
+//        增加读写设备flash接口
+//     3.0.0
+//         加入支持arm64
+//    */
+//
+//}
+
+
+/*
+version = "1.9.7"
+group = "com.Joyhonest"
+androidArtifact { // 2
+    artifactId = "Wifi_Camera"
+}
+publish {
+    userOrg = 'aivenlau'
+    desc = 'This is for JH WifiCamera'
+    website = 'https://github.com/aivenlau/Wifi_Camera'
+   // ./gradlew clean build bintrayUpload  -PbintrayUser=aivenlau  -PbintrayKey=18013f247275f1d35b7d591240c8594d99ef7a85 -PdryRun=false
+}
+*/
